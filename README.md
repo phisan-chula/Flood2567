@@ -2,15 +2,15 @@
 
 <table border="0">
  <tr>
-    <td><b style="font-size:30px">Title</b></td>
-    <td><b style="font-size:30px">Title 2</b></td>
+    <td><b style="font-size:30px">DryMeter</b></td>
+    <td><b style="font-size:30px">WetMeter</b></td>
  </tr>
  <tr>
-    <td>Lorem ipsum ...</td>
-    <td>Lorem ipsum ...</td>
+    <td>![DryMeter](https://github.com/phisan-chula/Flood2567/blob/main/DiagramDryMeter.png)</td>
+    <td>![WetMeter](https://github.com/phisan-chula/Flood2567/blob/main/DiagramWetMeter.png)</td>
  </tr>
 </table>
 
-![DryMeter](https://github.com/phisan-chula/Flood2567/blob/main/DiagramDryMeter.png)
 
-![WetMeter](https://github.com/phisan-chula/Flood2567/blob/main/DiagramWetMeter.png)
+
+
