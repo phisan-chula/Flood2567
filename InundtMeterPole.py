@@ -42,7 +42,6 @@ class InundatMeter:
 
         elect_pole = ImageObject( PIC_DIR / 'PEA_Pole.png', self.Canvas )
         elect_pole.Paste( 0.5, 0.5, centroid=True ) 
-
         #import pdb ; pdb.set_trace()
         self.green_meter = ImageObject( PIC_DIR / 'WattHourMeter_GREEN.png', self.Canvas )
         self.green_meter.Resize( 0.15 )
@@ -61,11 +60,11 @@ class InundatMeter:
             px = (lo-up)/self.POLE  # pixel per meter
             #import pdb ; pdb.set_trace()
             return lo-px*(AT-self.DTM)
-        at_img = HEI(AT_MSL)
-        at_hei = int( self.Canvas.size[1]*at_img )
+        at_norm = HEI(AT_MSL)
+        at_hei = int( self.Canvas.size[1]*at_norm )
         self.DRAW.line( [ (10,at_hei), (250,at_hei) ], fill=color, width=5 ) 
         self.DRAW.text( ( 10,at_hei), f'{TEXT}={AT_MSL:+.2f}m.', fill=color, font_size=32 )
-        return at_hei,at_img 
+        return at_hei,at_norm 
 
     def WetMeter(self, FLOOD_LEVEL ):
         assert (self.PEA_METER+self.DTM)<=FLOOD_LEVEL
