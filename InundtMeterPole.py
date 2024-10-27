@@ -64,51 +64,43 @@ class InundatMeter:
         self.red_meter = ImageObject( PIC_DIR/'WattHourMeter_RED.png', self.Canvas, centroid=True )
         self.red_meter.Resize( 0.15 )
 
-        if 0: # test
-            self.green_meter.Paste( 0.5, self.CANVAS_UPPER  )
-            self.red_meter.Paste( 0.5, self.CANVAS_LOWER  )
+        self.PlotLevel( 'DTM', self.DTM, 'brown', lw=10 ) 
         
     def MSL_NORM( self, MSL ):  # normalized!
         return self.CANVAS_LOWER-self.NORM_METER*(MSL-self.DTM)
 
-    def PlotLevel(self, TEXT, AT_MSL, color ):
+    def PlotLevel(self, TEXT, AT_MSL, color, lw=5 ):
         "draw line and text at specified level"
         def Calc_row( AT_MSL ):   # normalized!
             return self.CANVAS_LOWER-self.NORM_METER*(AT_MSL-self.DTM)
         row_norm = Calc_row(AT_MSL)
         at_hei = int( self.Canvas.size[1]*row_norm )
-        self.DRAW.line( [ (10,at_hei), (250,at_hei) ], fill=color, width=5 ) 
+        self.DRAW.line( [ (10,at_hei), (250,at_hei) ], fill=color, width=lw ) 
         self.DRAW.text( ( 10,at_hei), f'{TEXT}={AT_MSL:+.2f}m.', fill=color, font_size=24 )
-
         return at_hei,row_norm 
 
     def WetMeter(self, FLOOD_LEVEL ):
         assert self.MSL_METER<=FLOOD_LEVEL
-        self.PlotLevel( 'DTM', self.DTM, 'brown' ) 
         hei_PEA,row_norm = self.PlotLevel( 'PEA', self.PEA_METER+self.DTM, 'red' ) 
-
         self.red_meter.Paste( self.X_METER, row_norm )
         hei_FLD,row_norm = self.PlotLevel( 'FLOOD', FLOOD_LEVEL, 'blue' ) 
         self.green_meter.Paste( self.X_METER, row_norm )
-
+        #import pdb ; pdb.set_trace()
         self.DRAW.line( [ (350,hei_PEA), (350,hei_FLD ) ], fill='green', width=10 ) 
         def DrawArrow( xy ):
             x,y = xy; s = 20
             self.DRAW.line( [ (x,y), (x-s,y+s) ], fill='green', width=10 ) 
             self.DRAW.line( [ (x,y), (x+s,y+s) ], fill='green', width=10 ) 
-            #import pdb ; pdb.set_trace()
         DrawArrow( ( 350,hei_FLD ) )
-
         UP_OFF = FLOOD_LEVEL-self.MSL_METER
         MID = self.MSL_NORM( (FLOOD_LEVEL + self.MSL_METER)/2 ) *  self.Canvas.size[1]
         self.DRAW.text( ( 190, MID ), f'UP={UP_OFF:+.2f}m.', fill='green', font_size=24 )
 
     def DryMeter(self, FLOOD_LEVEL ):
         assert self.MSL_METER>=FLOOD_LEVEL
-        self.PlotLevel( 'DTM', self.DTM, 'brown' ) 
         at_hei,row_norm = self.PlotLevel( 'PEA', self.PEA_METER+self.DTM, 'green' ) 
         self.green_meter.Paste( 0.55, row_norm )
-        self.PlotLevel( 'FLOOD', FLOOD_LEVEL, 'blue' ) 
+        self.PlotLevel( 'WATER', FLOOD_LEVEL, 'blue' ) 
         #import pdb ; pdb.set_trace()
 
     def show(self):
